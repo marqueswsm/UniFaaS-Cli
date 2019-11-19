@@ -1,2 +1,8 @@
-# uni-faas-cli
-It is a CLI developed to create functions using Containers and Unikernels [In development]
+# uni-faas CLI
+
+A CLI for UniFaaS [In development]
+
+# License
+
+MIT - see LICENSE
+
