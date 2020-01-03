@@ -31,7 +31,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "gluegun": "latest"
+    "gluegun": "latest",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "@types/node": "^12.7.11",
