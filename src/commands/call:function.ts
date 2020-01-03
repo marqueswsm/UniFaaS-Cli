@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
 import * as R from 'ramda';
+import axios from 'axios';
 
 async function sh(cmd): Promise<any> {
   return new Promise(function (resolve, reject) {
@@ -10,18 +11,27 @@ async function sh(cmd): Promise<any> {
 }
 
 module.exports = {
-  name: 'build:function',
-  description: 'Create a function image',
+  name: 'call:function',
+  description: 'call a function',
   run: async toolbox => {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
     if (!options.name) {
-      print.info('Usage: uni-faas build:function --name [OPTION]');
+      print.info('Usage: uni-faas stop:function --name [OPTION]');
     }
 
-    await sh(`docker build -t ${options.name} .`);
+    await sh(`docker start ${options.name}`);
     
-    print.info('Image created');
+    try {
+      const response = await axios.get(`http://127.0.0.1:8080/api/person`, {
+        params: {
+          name: 'Wagner'
+        }
+      });
+      print.success(response.data);
+    } catch (err) {
+      print.error(err);
+    }    
   }
 }

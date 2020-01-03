@@ -10,18 +10,19 @@ async function sh(cmd): Promise<any> {
 }
 
 module.exports = {
-  name: 'build:function',
-  description: 'Create a function image',
+  name: 'start:function',
+  description: 'Start a deployed function',
   run: async toolbox => {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
     if (!options.name) {
-      print.info('Usage: uni-faas build:function --name [OPTION]');
+      print.info('Usage: uni-faas start:function --name [OPTION]');
     }
 
-    await sh(`docker build -t ${options.name} .`);
+    await sh(`docker start ${options.name}`);
     
-    print.info('Image created');
+    print.success('Function started');
+    print.info(`http://localhost:8080/api/${options.name}`)
   }
 }
