@@ -1,5 +1,34 @@
 import * as R from 'ramda';
 
+const unik = async (toolbox) => {
+  const {
+    template,
+    print: { success },
+  } = toolbox;
+
+  await template.generate({
+    template: 'unikernel/server.ts.ejs',
+    target: 'server.js',
+  });
+
+  await template.generate({
+    template: 'unikernel/function.ts.ejs',
+    target: 'function.js',
+  });
+
+  await template.generate({
+    template: 'unikernel/manifest.yaml.ejs',
+    target: 'manifest.yaml',
+  });
+
+  await template.generate({
+    template: 'unikernel/package.json.ejs',
+    target: 'package.json',
+  });
+
+  success(`Generated the function template`)
+};
+
 const docker = async (toolbox) =>  {
   const {
     parameters: { options },
@@ -63,7 +92,7 @@ module.exports = {
     }
 
     if (options.virt === 'unik') {
-      console.log('Not yet');
+      await unik(toolbox);
     }
   }
 }

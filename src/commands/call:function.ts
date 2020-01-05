@@ -18,7 +18,7 @@ module.exports = {
     const print   = R.prop('print', toolbox); 
 
     if (!options.name) {
-      print.info('Usage: uni-faas stop:function --name [OPTION]');
+      print.info('Usage: uni-faas call:function --name [OPTION]');
     }
 
     await sh(`docker start ${options.name}`);

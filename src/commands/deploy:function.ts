@@ -16,13 +16,26 @@ module.exports = {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.name) {
-      print.info('Usage: uni-faas deploy:function --name [OPTION]');
+    if (!options.virt) {
+      print.info('Usage: uni-faas deploy:function --virt [OPTION] --name [OPTION]');
     }
 
-    await sh(`docker run --name ${options.name} -p 8080:80 -d -t ${options.name} `);
+    if (!options.name) {
+      print.info('Usage: uni-faas deploy:function --virt [OPTION] --name [OPTION]');
+    }
+
+    if (options.virt === 'docker') {
+      await sh(`docker run --name ${options.name} -p 8080:80 -d -t ${options.name} `);
     
-    print.success('Function Deployed');
-    print.info(`http://localhost:8080/api/${options.name}`)
+      print.success('Function Deployed');
+      print.info(`http://localhost:8080/api/${options.name}`)
+    }  
+    
+    if (options.virt === 'unik') {
+      const response = await sh(`unik run --instanceName ${options.name} --imageName ${options.name} `);
+    
+      print.success('Function Deployed');
+      print.info(response);
+    } 
   }
 }

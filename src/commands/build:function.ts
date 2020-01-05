@@ -16,12 +16,23 @@ module.exports = {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.name) {
-      print.info('Usage: uni-faas build:function --name [OPTION]');
+    if (!options.virt) {
+      print.info('Usage: uni-faas build:function --virt [OPTION] --name [OPTION]');
     }
 
-    await sh(`docker build -t ${options.name} .`);
-    
-    print.info('Image created');
+    if (!options.name) {
+      print.info('Usage: uni-faas build:function --virt [OPTION] --name [OPTION]');
+    }
+
+    if (options.virt === 'docker') {
+      await sh(`docker build -t ${options.name} .`);    
+      print.info('Image created');
+    }
+
+    if (options.virt === 'unik') {
+      console.log(await sh('npm install'));
+      const response = await sh(`unik build --name ${options.name} --path ./ --base rump --language nodejs --provider virtualbox --force`);
+      print.info(response);
+    }    
   }
 }
