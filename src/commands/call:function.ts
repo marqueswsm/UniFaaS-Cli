@@ -22,9 +22,19 @@ module.exports = {
     }
 
     await sh(`docker start ${options.name}`);
+
+    axios.interceptors.response.use((response) => {
+      return response;
+    },(error) => {
+      if (error.code === 'ECONNRESET') {     
+        const requestConfig = error.config;
+        return axios(requestConfig);
+      }
+      return Promise.reject(error);
+    });    
     
     try {
-      const response = await axios.get(`http://127.0.0.1:8080/api/person`, {
+      const response = await axios.get(`http://127.0.0.1:8080/api/${options.name}`, {
         params: {
           name: 'Wagner'
         }
