@@ -25,8 +25,9 @@ module.exports = {
     }
 
     if (options.virt === 'docker') {
-      await sh(`docker build -t ${options.name} .`);    
-      print.info('Image created');
+      // await sh(`docker rmi ${options.name}`);
+      const response = await sh(`docker build -t ${options.name} .`);
+      print.info(response);
     }
 
     if (options.virt === 'unik') {

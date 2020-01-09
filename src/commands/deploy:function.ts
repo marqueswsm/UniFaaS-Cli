@@ -25,14 +25,15 @@ module.exports = {
     }
 
     if (options.virt === 'docker') {
-      await sh(`docker run --name ${options.name} -p 8080:80 -d -t ${options.name} `);
+      await sh(`docker rm ${options.name} --force`);
+      await sh(`docker run --name ${options.name} --memory 256m -p 8080:80 -d -t ${options.name} `);
     
       print.success('Function Deployed');
       print.info(`http://localhost:8080/api/${options.name}`)
     }  
     
     if (options.virt === 'unik') {
-      const response = await sh(`unik run --instanceName ${options.name} --imageName ${options.name} `);
+      const response = await sh(`unik run --instanceName ${options.name} --imageName ${options.name} ${ options.memory ? `--instanceMemory ${options.memory}` : ''}`);
     
       print.success('Function Deployed');
       print.info(response);

@@ -17,31 +17,54 @@ module.exports = {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.name) {
-      print.info('Usage: uni-faas call:function --name [OPTION]');
+    if (!options.virt) {
+      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
     }
 
-    await sh(`docker start ${options.name}`);
+    if (!options.name) {
+      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
+    }
 
-    axios.interceptors.response.use((response) => {
-      return response;
-    },(error) => {
-      if (error.code === 'ECONNRESET') {     
-        const requestConfig = error.config;
-        return axios(requestConfig);
-      }
-      return Promise.reject(error);
-    });    
-    
-    try {
-      const response = await axios.get(`http://127.0.0.1:8080/api/${options.name}`, {
-        params: {
-          name: 'Wagner'
+    if (options.virt === 'docker') {
+      await sh(`docker start ${options.name}`);
+
+      axios.interceptors.response.use((response) => {
+        return response;
+      },(error) => {
+        if (error.code === 'ECONNRESET') {     
+          const requestConfig = error.config;
+          return axios(requestConfig);
         }
-      });
-      print.success(response.data);
-    } catch (err) {
-      print.error(err);
-    }    
+        return Promise.reject(error);
+      });    
+      
+      try {
+        const response = await axios.get(`http://127.0.0.1:8080/api/${options.name}?number=43`);
+        print.success(response.data);
+      } catch (err) {
+        print.error(err);
+      }    
+    }  
+
+    if (options.virt === 'unik') {
+      await sh(`unik start --instance ${options.name}`);
+
+      axios.interceptors.response.use((response) => {
+        return response;
+      },(error) => {
+        if (error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {     
+          const requestConfig = error.config;
+          return axios(requestConfig);
+        }
+        return Promise.reject(error);
+      });   
+
+      try {
+        const response = await axios.get(`http://192.168.0.104:8080/?number=43`);
+        print.success(response.data);
+      } catch (err) {
+        print.error(err);
+      }    
+    }  
   }
 }
