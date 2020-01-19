@@ -11,21 +11,17 @@ async function sh(cmd): Promise<any> {
 }
 
 module.exports = {
-  name: 'call:function',
+  name: 'call',
   description: 'call a function',
   run: async toolbox => {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.virt) {
-      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
+    if (!options.base || !options.name) {
+      print.info('Usage: unifaas call --virt [DOCKER | UNIK | OSV] --name [OPTION]');
     }
 
-    if (!options.name) {
-      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
-    }
-
-    if (options.virt === 'docker') {
+    if (options.base === 'docker') {
       await sh(`docker start ${options.name}`);
 
       axios.interceptors.response.use((response) => {
@@ -46,7 +42,7 @@ module.exports = {
       }    
     }  
 
-    if (options.virt === 'unik') {
+    if (options.base === 'unik') {
       await sh(`unik start --instance ${options.name}`);
 
       axios.interceptors.response.use((response) => {
@@ -65,6 +61,10 @@ module.exports = {
       } catch (err) {
         print.error(err);
       }    
-    }  
+    }
+
+    if (options.base === 'osv') {
+      console.log('OSV');
+    }
   }
 }
