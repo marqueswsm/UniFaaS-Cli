@@ -77,22 +77,26 @@ const docker = async (toolbox) =>  {
 };
 
 module.exports = {
-  name: 'generate:function',
+  name: 'generate',
   description: 'Create a function template',
   run: async toolbox => {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.virt || !options.name) {
-      print.info('Usage: uni-faas generate:function --virt [DOCKER | UNIK] --name [OPTION]');
+    if (!options.base || !options.name) {
+      print.info('Usage: unifaas generate --base [DOCKER | UNIK | OSV] --name [OPTION]');
     }
 
-    if (options.virt === 'docker') {
+    if (options.base === 'docker') {
       await docker(toolbox);
     }
 
-    if (options.virt === 'unik') {
+    if (options.base === 'unik') {
       await unik(toolbox);
+    }
+
+    if (options.base === 'osv') {
+      console.log('We are developing it now');
     }
   }
 }
