@@ -42,6 +42,6 @@ This is then accessible in your plugin's commands as `toolbox.bar`.
 
 # Loading a plugin
 
-To load a particular plugin (which has to start with `uni-faas-*`),
-install it to your project using `npm install --save-dev uni-faas-PLUGINNAME`,
+To load a particular plugin (which has to start with `unifaas-*`),
+install it to your project using `npm install --save-dev unifaas -PLUGINNAME`,
 and uni-faas will pick it up automatically.

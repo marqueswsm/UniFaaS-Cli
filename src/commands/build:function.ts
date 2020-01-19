@@ -17,11 +17,11 @@ module.exports = {
     const print   = R.prop('print', toolbox); 
 
     if (!options.virt) {
-      print.info('Usage: uni-faas build:function --virt [OPTION] --name [OPTION]');
+      print.info('Usage: unifaas build:function --virt [OPTION] --name [OPTION]');
     }
 
     if (!options.name) {
-      print.info('Usage: uni-faas build:function --virt [OPTION] --name [OPTION]');
+      print.info('Usage: unifaas build:function --virt [OPTION] --name [OPTION]');
     }
 
     if (options.virt === 'docker') {

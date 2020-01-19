@@ -1,4 +1,4 @@
-# uni-faas CLI
+# unifaas CLI
 
 A CLI for UniFaaS [In development]
 
