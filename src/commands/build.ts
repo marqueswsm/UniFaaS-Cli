@@ -33,7 +33,9 @@ module.exports = {
     }
     
     if (options.base === 'osv') {
-      console.log('Still in development');
+      console.log(await sh('npm install'));
+      const response = await sh(`capstan package compose ${options.name}`);
+      print.info(response);
     }
   }
 }

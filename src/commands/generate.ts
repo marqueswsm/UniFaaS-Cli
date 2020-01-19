@@ -7,22 +7,22 @@ const unik = async (toolbox) => {
   } = toolbox;
 
   await template.generate({
-    template: 'unikernel/server.ts.ejs',
+    template: 'unik/server.ts.ejs',
     target: 'server.js',
   });
 
   await template.generate({
-    template: 'unikernel/function.ts.ejs',
+    template: 'unik/function.ts.ejs',
     target: 'function.js',
   });
 
   await template.generate({
-    template: 'unikernel/manifest.yaml.ejs',
+    template: 'unik/manifest.yaml.ejs',
     target: 'manifest.yaml',
   });
 
   await template.generate({
-    template: 'unikernel/package.json.ejs',
+    template: 'unik/package.json.ejs',
     target: 'package.json',
   });
 
@@ -76,6 +76,33 @@ const docker = async (toolbox) =>  {
   success(`Generated a function called ${name}`)
 };
 
+const osv = async (toolbox) => {
+  const {
+    parameters: { options },
+    template,
+    print: { success, error },
+  } = toolbox;
+
+  const name = R.prop('name', options);
+
+  if (!name) {
+    error('Function name must be specified');
+    return
+  }
+
+  await template.generate({
+    template: 'osv/package.yaml',
+    target: 'meta/package.yaml',
+  });
+
+  await template.generate({
+    template: 'osv/run.yaml',
+    target: 'meta/run.yaml',
+  });
+
+  success('A function template was generated');
+}
+
 module.exports = {
   name: 'generate',
   description: 'Create a function template',
@@ -96,7 +123,7 @@ module.exports = {
     }
 
     if (options.base === 'osv') {
-      console.log('We are developing it now');
+      await osv(toolbox);
     }
   }
 }
