@@ -100,6 +100,16 @@ const osv = async (toolbox) => {
     target: 'meta/run.yaml',
   });
 
+  await template.generate({
+    template: 'osv/function.js',
+    target: 'function.js',
+  });
+
+  await template.generate({
+    template: 'osv/start.js',
+    target: 'start.js'
+  })
+
   success('A function template was generated');
 }
 
