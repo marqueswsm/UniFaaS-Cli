@@ -108,6 +108,11 @@ const osv = async (toolbox) => {
   await template.generate({
     template: 'osv/start.js',
     target: 'start.js'
+  });
+
+  await template.generate({
+    template: 'osv/package.json',
+    target: 'package.json'
   })
 
   success('A function template was generated');
