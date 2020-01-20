@@ -7,3 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Ongoing Changes
 ### Added
 - New CLI name
+- Function template to run over osv
+- Build function over osv
+- Run function over ovs
