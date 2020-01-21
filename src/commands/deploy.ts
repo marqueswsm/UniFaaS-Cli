@@ -36,7 +36,7 @@ module.exports = {
     }
 
     if (options.base === 'osv') {
-      const response = await sh(`capstan run -f 3000:3000`);
+      const response = sh(`capstan run -f 3000:3000`);
 
       print.success('Function are running!')
       print.info(response);

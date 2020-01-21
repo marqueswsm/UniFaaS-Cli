@@ -64,7 +64,24 @@ module.exports = {
     }
 
     if (options.base === 'osv') {
-      console.log('OSV');
+      await sh(`capstan start ${options.name}`);
+
+      axios.interceptors.response.use((response) => {
+        return response;
+      },(error) => {
+        if (error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {     
+          const requestConfig = error.config;
+          return axios(requestConfig);
+        }
+        return Promise.reject(error);
+      });   
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:3000/?name=wagner`);
+        print.success(response.data);
+      } catch (err) {
+        print.error(err);
+      }    
     }
   }
 }
