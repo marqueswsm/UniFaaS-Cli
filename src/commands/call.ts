@@ -64,7 +64,7 @@ module.exports = {
     }
 
     if (options.base === 'osv') {
-      console.log(await sh(`capstan run -f 3000:3000 &`));
+      exec('capstan run -f 3000:3000', null);
 
       axios.interceptors.response.use((response) => {
         return response;
