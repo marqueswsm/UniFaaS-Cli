@@ -36,10 +36,9 @@ module.exports = {
     }
 
     if (options.base === 'osv') {
-      const response = sh(`capstan run -f 3000:3000`);
-
+      // tslint:disable-next-line: no-floating-promises
+      sh(`capstan run -f 3000:3000 &`);
       print.success('Function are running!')
-      print.info(response);
     }
   }
 }
