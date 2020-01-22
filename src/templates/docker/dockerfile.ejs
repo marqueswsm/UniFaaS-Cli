@@ -1,9 +1,19 @@
-FROM mcr.microsoft.com/azure-functions/node:2.0
+FROM node:latest
 
-ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
-    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+# Create app directory
+WORKDIR /usr/src/app
 
-COPY . /home/site/wwwroot
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-RUN cd /home/site/wwwroot && \
-    npm install
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
+COPY . .
+
+EXPOSE 3000
+CMD [ "node", "start.js" ]
