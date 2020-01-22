@@ -22,10 +22,10 @@ module.exports = {
 
     if (options.base === 'docker') {
       await sh(`docker rm ${options.name} --force`);
-      await sh(`docker run --name ${options.name} --memory 256m -p 8080:80 -d -t ${options.name} `);
+      console.log(await sh(`docker run --name ${options.name} --memory 256m -p 3000:3000 -d -t ${options.name} `));
     
       print.success('Function Deployed');
-      print.info(`http://localhost:8080/api/${options.name}`)
+      print.info(`http://localhost:3000/`)
     }  
     
     if (options.base === 'unik') {

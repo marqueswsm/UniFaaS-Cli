@@ -18,7 +18,7 @@ module.exports = {
     const print   = R.prop('print', toolbox); 
 
     if (!options.base || !options.name) {
-      print.info('Usage: unifaas call --virt [DOCKER | UNIK | OSV] --name [OPTION]');
+      print.info('Usage: unifaas call --base [DOCKER | UNIK | OSV] --name [OPTION]');
     }
 
     if (options.base === 'docker') {
@@ -35,7 +35,7 @@ module.exports = {
       });    
       
       try {
-        const response = await axios.get(`http://127.0.0.1:8080/api/${options.name}?name=wagner`);
+        const response = await axios.get('http://127.0.0.1:3000/?name=wagner');
         print.success(response.data);
       } catch (err) {
         print.error(err);

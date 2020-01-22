@@ -44,32 +44,22 @@ const docker = async (toolbox) =>  {
   }
 
   await template.generate({
-    template: 'docker/template.ts.ejs',
-    target: `${name}/index.js`,
+    template: 'docker/Dockerfile',
+    target: 'Dockerfile',
   });
 
   await template.generate({
-    template: 'docker/conf.json.ejs',
-    target: `${name}/function.json`,
+    template: 'docker/function.js',
+    target: 'function.js'
   });
 
   await template.generate({
-    template: 'docker/dockerfile.ejs',
-    target: `Dockerfile`,
+    template: 'docker/server.js',
+    target: 'server.js'
   });
 
   await template.generate({
-    template: 'docker/host.json.ejs',
-    target: 'host.json',
-  });
-
-  await template.generate({
-    template: 'docker/local.settings.json.ejs',
-    target: 'local.settings.json',
-  });
-
-  await template.generate({
-    template: 'docker/package.json.ejs',
+    template: 'docker/package.json',
     target: 'package.json'
   });
 
