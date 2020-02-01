@@ -11,21 +11,17 @@ async function sh(cmd): Promise<any> {
 }
 
 module.exports = {
-  name: 'call:function',
+  name: 'call',
   description: 'call a function',
   run: async toolbox => {
     const options = R.path(['parameters', 'options'], toolbox);
     const print   = R.prop('print', toolbox); 
 
-    if (!options.virt) {
-      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
+    if (!options.base || !options.name) {
+      print.info('Usage: unifaas call --base [DOCKER | UNIK | OSV] --name [OPTION]');
     }
 
-    if (!options.name) {
-      print.info('Usage: uni-faas call:function --virt [OPTION] --name [OPTION]');
-    }
-
-    if (options.virt === 'docker') {
+    if (options.base === 'docker') {
       await sh(`docker start ${options.name}`);
 
       axios.interceptors.response.use((response) => {
@@ -39,14 +35,14 @@ module.exports = {
       });    
       
       try {
-        const response = await axios.get(`http://127.0.0.1:8080/api/${options.name}?number=43`);
+        const response = await axios.get('http://127.0.0.1:3000/?name=wagner');
         print.success(response.data);
       } catch (err) {
         print.error(err);
       }    
     }  
 
-    if (options.virt === 'unik') {
+    if (options.base === 'unik') {
       await sh(`unik start --instance ${options.name}`);
 
       axios.interceptors.response.use((response) => {
@@ -65,6 +61,27 @@ module.exports = {
       } catch (err) {
         print.error(err);
       }    
-    }  
+    }
+
+    if (options.base === 'osv') {
+      exec('capstan run -f 3000:3000', null);
+
+      axios.interceptors.response.use((response) => {
+        return response;
+      },(error) => {
+        if (error.code === 'ECONNRESET' || error.code === 'ECONNREFUSED') {     
+          const requestConfig = error.config;
+          return axios(requestConfig);
+        }
+        return Promise.reject(error);
+      });   
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:3000/?name=wagner`);
+        print.success(response.data);
+      } catch (err) {
+        print.error(err);
+      }    
+    }
   }
 }

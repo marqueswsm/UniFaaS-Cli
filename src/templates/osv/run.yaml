@@ -1,0 +1,5 @@
+runtime: node
+config_set:
+   default:
+      main: /start.js
+config_set_default: default

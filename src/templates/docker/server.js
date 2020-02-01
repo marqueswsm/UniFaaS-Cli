@@ -9,10 +9,6 @@ app.use(router);
 
 router.get('/', func);
 
-// router.get("/", function (req, res) {
-//   res.json({ response: 'ok' });
-// });
-
-app.listen(8080, () => {
- console.log("Function running on port 8080");
+app.listen(3000, () => {
+ console.log("Function running on port 3000");
 });
