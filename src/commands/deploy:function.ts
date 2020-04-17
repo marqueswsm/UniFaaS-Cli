@@ -26,10 +26,13 @@ module.exports = {
 
     if (options.virt === 'docker') {
       await sh(`docker rm ${options.name} --force`);
-      await sh(`docker run --name ${options.name} --memory 256m -p 8080:80 -d -t ${options.name} `);
-    
-      print.success('Function Deployed');
-      print.info(`http://localhost:8080/api/${options.name}`)
+      const response = await sh(`docker run --name ${options.name} --memory 256m -p 8080:80 -d -t ${options.name} `);
+      if (response.stdout === '') {
+        print.error(response.stderr);
+      } else {
+        print.success('Function Deployed');
+        print.info(`http://localhost:8080/api/${options.name}`)
+      }
     }  
     
     if (options.virt === 'unik') {
